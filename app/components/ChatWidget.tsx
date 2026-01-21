@@ -41,7 +41,7 @@ export default function ChatWidget() {
 
     try {
       // 2. Make API Call to your Backend
-      const response = await fetch("https://Astrik10-client-portfolio.hf.space/api/chat", {
+      const response = await fetch("https://Astrik10-client-portfolio.hf.space/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMsg }),
