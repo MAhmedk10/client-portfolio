@@ -157,92 +157,61 @@ const VideoModal = ({
 };
 
 // Project Card Component
-const ProjectCard = ({ 
-  project, 
-  index,
-  onPlayVideo 
-}: { 
-  project: any, 
-  index: number,
-  onPlayVideo: (project: any) => void 
+const ProjectCard = ({
+  project,
+  onPlayVideo,
+}: {
+  project: any;
+  onPlayVideo: (project: any) => void;
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <motion.div
-      key={index}
-      variants={scaleUp}
-      whileHover={{ y: -8 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm cursor-pointer"
+      variants={fadeInUp}
+      whileHover={{ scale: 1.02 }}
+      className="group relative aspect-[9/16] md:aspect-video overflow-hidden rounded-2xl cursor-pointer"
       onClick={() => onPlayVideo(project)}
     >
-      {/* Video Thumbnail */}
-      <div className="relative aspect-video overflow-hidden">
-        <div className={`absolute inset-0 ${project.thumbnailColor} opacity-20 group-hover:opacity-30 transition-opacity duration-500`} />
-        
-        {/* Play Button Overlay */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <motion.div
-            animate={isHovered ? { scale: 1.1 } : { scale: 1 }}
-            className="w-16 h-16 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center"
-          >
-            <Play size={24} className="text-white ml-1" />
-          </motion.div>
-        </div>
-        
-        {/* Category Badge */}
-        <div className="absolute top-4 left-4">
-          <div className="text-xs font-medium px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-sm">
-            {project.category}
-          </div>
-        </div>
+      {/* Thumbnail */}
+      <div className="absolute inset-0">
+        <div
+          className={`absolute inset-0 ${project.thumbnailColor} opacity-30`}
+        />
+        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
       </div>
 
-      {/* Content */}
-      <div className="p-6">
-        <div className="flex items-start justify-between mb-4">
-          <div>
-            <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-            <p className="text-sm text-neutral-400">{project.client}</p>
-          </div>
-          <motion.div
-            animate={{ rotate: isHovered ? 45 : 0 }}
-            className="p-2 rounded-full bg-white/10"
-          >
-            <ExternalLink size={16} />
-          </motion.div>
-        </div>
-        
-        <p className="text-sm text-neutral-400 mb-4 line-clamp-2">
-          {project.description}
-        </p>
-        
-        <div className="flex items-center justify-between pt-4 border-t border-white/10">
-          <div className="flex items-center gap-4">
-            <div className="text-sm">
-              <div className="text-neutral-400">Views</div>
-              <div className="font-medium">{project.stats}</div>
-            </div>
-            <div className="text-sm">
-              <div className="text-neutral-400">Duration</div>
-              <div className="font-medium">{project.duration}</div>
-            </div>
-          </div>
-          
-          <div className="flex gap-2">
-            {project.tags.map((tag: string, i: number) => (
-              <span key={i} className="text-xs px-2 py-1 rounded-full bg-white/5">
-                {tag}
-              </span>
-            ))}
-          </div>
+      {/* Play Button */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <motion.div
+          whileHover={{ scale: 1.15 }}
+          className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-black shadow-xl"
+        >
+          <Play size={22} className="ml-0.5" />
+        </motion.div>
+      </div>
+
+      {/* Bottom Info */}
+      <div className="absolute bottom-0 left-0 right-0 p-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-medium tracking-wide text-white">
+            {project.title}
+          </h3>
+          <span className="text-xs text-neutral-300">
+            {project.category}
+          </span>
         </div>
       </div>
     </motion.div>
   );
 };
+
+
+const footerLinks = {
+  work: ["Featured Projects", "Showreel"],
+  services: ["Video Editing", "Motion Graphics", "Color Grading"],
+  company: ["About Studio", "Process", "Careers"],
+  contact: ["Start a Project", "Schedule a Call", "Email Us"],
+};
+
 
 export default function Home() {
   const targetRef = useRef(null);
@@ -387,48 +356,55 @@ export default function Home() {
     <div className="min-h-screen bg-[#0A0A0F] text-white overflow-x-hidden">
       {/* Minimal Navigation */}
       <motion.nav
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        className="fixed top-0 left-0 right-0 z-40 border-b border-white/5 bg-black/40 backdrop-blur-xl"
-      >
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <button 
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="flex items-center gap-3 cursor-pointer"
-            >
-              <div className="h-2 w-2 rounded-full bg-gradient-to-br from-violet-500 to-cyan-500" />
-              <span className="text-xl font-bold tracking-tight">STUDIO</span>
-            </button>
+  initial={{ y: -60, opacity: 0 }}
+  animate={{ y: 0, opacity: 1 }}
+  transition={{ duration: 0.6, ease: "easeOut" }}
+  className="fixed top-4 left-1/2 -translate-x-1/2 z-40 
+             w-[92%] max-w-5xl rounded-full 
+             border border-white/10 bg-black/30 backdrop-blur-xl"
+>
+  <div className="flex items-center justify-between px-6 py-3">
+    
+    {/* Logo */}
+    <button
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      className="flex items-center gap-2"
+    >
+      <div className="h-2 w-2 rounded-full bg-gradient-to-br from-violet-500 to-cyan-500" />
+      <span className="text-sm font-semibold tracking-wide">EESA STUDIO</span>
+    </button>
 
-            <div className="hidden md:flex items-center gap-8">
-              {['Work', 'Process', 'About', 'Contact'].map((item) => (
-                <button
-                  key={item}
-                  onClick={() => {
-                    const element = document.getElementById(item.toLowerCase());
-                    element?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="text-sm font-medium text-neutral-400 hover:text-white transition-colors"
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
+    {/* Center Menu */}
+    <div className="hidden md:flex items-center gap-8">
+      {["Work", "Process", "About", "Contact"].map((item) => (
+        <button
+          key={item}
+          onClick={() =>
+            document.getElementById(item.toLowerCase())?.scrollIntoView({
+              behavior: "smooth",
+            })
+          }
+          className="text-sm text-neutral-400 hover:text-white transition-colors"
+        >
+          {item}
+        </button>
+      ))}
+    </div>
 
-            <button 
-              onClick={handleStartProject}
-              className="px-6 py-2.5 rounded-full bg-white text-black text-sm font-medium hover:bg-white/90 transition-colors"
-            >
-              Start Project
-            </button>
-          </div>
-        </div>
-      </motion.nav>
+    {/* CTA */}
+    <button
+      onClick={handleStartProject}
+      className="text-sm px-4 py-2 rounded-full 
+                 bg-white/90 text-black hover:bg-white transition"
+    >
+      Start Project
+    </button>
+  </div>
+</motion.nav>
+
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 pt-24 pb-20 overflow-hidden">
+      <section className="relative min-h-[100svh] flex items-center justify-center px-4 sm:px-6 pt-28 pb-16 sm:pb-20 overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0">
           <div className="absolute top-1/4 left-1/4 h-[600px] w-[600px] rounded-full bg-violet-500/5 blur-[120px]" />
@@ -444,38 +420,45 @@ export default function Home() {
           variants={staggerContainer}
           className="relative z-10 max-w-7xl text-center"
         >
-          {/* Badge */}
-          <motion.div 
-            variants={fadeInUp}
-            className="mb-12 flex justify-center"
-          >
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-xl">
-              <div className="h-2 w-2 rounded-full bg-green-500" />
-              <span className="text-sm font-medium text-neutral-300">
-                ACCEPTING 2025 CLIENTS
-              </span>
-            </div>
-          </motion.div>
+          
 
           {/* Main Heading */}
           <motion.h1
-            variants={fadeInUp}
-            className="text-6xl md:text-8xl lg:text-9xl font-black leading-[0.9] tracking-tighter mb-8"
-          >
-            <span className="text-white">VISUAL</span>
-            <br />
-            <span className="bg-gradient-to-r from-violet-500 to-cyan-400 bg-clip-text text-transparent">
-              STORYTELLING
-            </span>
-          </motion.h1>
+  variants={fadeInUp}
+  className="
+    mx-auto max-w-[92vw]
+    text-[clamp(2.4rem,8vw,3.5rem)]
+    sm:text-[clamp(3.5rem,7vw,5rem)]
+    md:text-[clamp(4.5rem,7vw,7rem)]
+    lg:text-[clamp(6rem,6vw,8rem)]
+    xl:text-9xl
+    font-black tracking-tight
+    leading-[1.1] sm:leading-[1]
+    mb-6 sm:mb-8
+    break-words
+  "
+>
+  <span className="block">VISUAL</span>
+  <span className="block bg-gradient-to-r from-violet-500 to-cyan-400 bg-clip-text text-transparent">
+    STORYTELLING
+  </span>
+</motion.h1>
 
-          <motion.p variants={fadeInUp} className="mx-auto mt-8 max-w-2xl text-lg text-neutral-400 leading-relaxed">
+          <motion.p
+  variants={fadeInUp}
+  className="mx-auto mt-6 sm:mt-8 max-w-xl sm:max-w-2xl 
+             text-base sm:text-lg text-neutral-400 leading-relaxed px-2"
+>
             We craft cinematic experiences that captivate audiences and deliver measurable results. 
             Premium editing for visionary creators and forward-thinking brands.
           </motion.p>
 
           {/* CTA Buttons */}
-          <motion.div variants={fadeInUp} className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <motion.div
+  variants={fadeInUp}
+  className="mt-10 sm:mt-12 flex flex-col sm:flex-row 
+             items-center justify-center gap-4 w-full"
+>
             <button
               onClick={handleOpenShowreel}
               className="group relative overflow-hidden rounded-full bg-gradient-to-r from-violet-600 to-cyan-600 px-8 py-4 font-medium text-white"
@@ -500,16 +483,17 @@ export default function Home() {
 
           {/* Stats Bar */}
           <motion.div
-            variants={staggerContainer}
-            className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-8"
-          >
+  variants={staggerContainer}
+  className="mt-16 sm:mt-24 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8"
+>
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
                 variants={scaleUp}
                 className="text-center"
               >
-                <div className="text-4xl font-bold mb-2 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+                <div className="text-3xl sm:text-4xl font-bold mb-1 sm:mb-2 
+                bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
                   {stat.value}
                 </div>
                 <div className="text-sm text-neutral-500">{stat.label}</div>
@@ -567,7 +551,6 @@ export default function Home() {
                   <ProjectCard
                     key={project.id}
                     project={project}
-                    index={index}
                     onPlayVideo={handlePlayVideo}
                   />
                 ))}
@@ -814,6 +797,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
+
       <footer className="px-6 py-20 border-t border-white/10 bg-black/50">
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -870,23 +854,30 @@ export default function Home() {
               </div>
             </div>
             
-            {['Work', 'Process', 'About', 'Contact'].map((title, idx) => (
-              <div key={idx}>
-                <h5 className="mb-4 font-medium text-white">{title}</h5>
-                <ul className="space-y-3 text-neutral-500">
-                  {projects.slice(idx * 1, idx * 1 + 2).map((project) => (
-                    <li key={project.id}>
-                      <button 
-                        onClick={() => handlePlayVideo(project)}
-                        className="hover:text-violet-400 transition-colors text-left"
-                      >
-                        {project.title}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            {Object.entries(footerLinks).map(([section, links]) => (
+  <div key={section}>
+    <h5 className="mb-4 font-medium text-white capitalize">
+      {section}
+    </h5>
+    <ul className="space-y-3 text-neutral-500">
+      {links.map((label) => (
+        <li key={label}>
+          <button
+            className="hover:text-violet-400 transition-colors text-left"
+            onClick={() => {
+              if (label === "Start a Project") handleStartProject();
+              if (label === "Schedule a Call") handleScheduleCall();
+              if (label === "Email Us") handleContactEmail();
+            }}
+          >
+            {label}
+          </button>
+        </li>
+      ))}
+    </ul>
+  </div>
+))}
+
           </div>
           
           <div className="mt-20 text-center text-sm text-neutral-600">
