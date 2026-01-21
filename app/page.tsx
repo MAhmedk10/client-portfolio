@@ -641,7 +641,7 @@ export default function Home() {
                   variants={scaleUp}
                   whileHover={{ y: -8 }}
                   className="relative p-8 rounded-3xl border border-white/10 bg-gradient-to-b from-white/5 to-transparent backdrop-blur-sm cursor-pointer"
-                  onClick={process.action}
+
                 >
                   <div className="absolute -top-4 left-8 w-12 h-12 rounded-xl bg-gradient-to-br from-violet-600 to-cyan-600 flex items-center justify-center font-bold">
                     {process.step}
