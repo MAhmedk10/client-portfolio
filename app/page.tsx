@@ -168,7 +168,7 @@ const ProjectCard = ({
     <motion.div
       variants={fadeInUp}
       whileHover={{ scale: 1.02 }}
-      className="group relative aspect-[9/16] md:aspect-video overflow-hidden rounded-2xl cursor-pointer"
+      className="group relative aspect-video sm:aspect-9/16 md:aspect-video overflow-hidden rounded-2xl cursor-pointer"
       onClick={() => onPlayVideo(project)}
     >
       {/* Thumbnail */}
@@ -536,13 +536,6 @@ export default function Home() {
                     </span>
                   </h2>
                 </div>
-                <button 
-                  onClick={handleViewAllProjects}
-                  className="text-sm text-neutral-400 hover:text-white transition-colors hidden md:flex items-center gap-2"
-                >
-                  View All
-                  <ArrowUpRight size={16} />
-                </button>
               </div>
 
               {/* Work Grid with Videos */}
@@ -556,12 +549,7 @@ export default function Home() {
                 ))}
               </div>
 
-              <button 
-                onClick={handleViewAllProjects}
-                className="mt-8 w-full md:hidden rounded-full border border-white/20 px-6 py-3 text-white hover:bg-white/5 transition-colors"
-              >
-                View All Projects
-              </button>
+            
             </motion.div>
           </motion.div>
         </div>
