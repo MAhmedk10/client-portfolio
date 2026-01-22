@@ -4,7 +4,7 @@ import { Play, Zap, Globe, Layers, ArrowUpRight, Instagram, Twitter, Linkedin, S
 import ChatWidget from "./components/ChatWidget";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
-import Image from "next/image";
+import WorkShowcase from "./components/WorkShowcase";
 
 import type { Variants } from "framer-motion";
 
@@ -81,18 +81,8 @@ const staggerContainer: Variants = {
 
 
 // Video Modal Component
-const VideoModal = ({ 
-  isOpen, 
-  onClose, 
-  videoUrl, 
-  title, 
-  description 
-}: { 
-  isOpen: boolean, 
-  onClose: () => void,
-  videoUrl: string,
-  title: string,
-  description: string
+const VideoModal = ({ isOpen, onClose, videoUrl, title, description }: { 
+  isOpen: boolean, onClose: () => void, videoUrl: string, title: string, description?: string
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -100,107 +90,37 @@ const VideoModal = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl"
           onClick={onClose}
         >
           <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.95, opacity: 0 }}
+            initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
             className="relative w-full max-w-6xl aspect-video rounded-3xl overflow-hidden bg-black border border-white/10"
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              onClick={onClose}
-              className="absolute top-6 right-6 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-lg transition-all"
-            >
+            <button onClick={onClose} className="absolute top-6 right-6 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-lg transition-all">
               <X size={24} />
             </button>
-            
             <div className="absolute inset-0 bg-gradient-to-br from-violet-900/20 via-transparent to-cyan-900/20" />
             
             {isPlaying ? (
               <div className="relative h-full">
-                <iframe
-                  src={videoUrl}
-                  className="w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+                <iframe src={videoUrl} className="w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
               </div>
             ) : (
               <div className="relative h-full flex flex-col items-center justify-center p-12">
-                <motion.button
-                  onClick={() => setIsPlaying(true)}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-24 h-24 rounded-full bg-gradient-to-br from-violet-600 to-cyan-600 flex items-center justify-center mb-8 shadow-2xl shadow-violet-500/30 hover:shadow-violet-500/50 transition-all"
-                >
+                <motion.button onClick={() => setIsPlaying(true)} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} className="w-24 h-24 rounded-full bg-gradient-to-br from-violet-600 to-cyan-600 flex items-center justify-center mb-8 shadow-2xl shadow-violet-500/30">
                   <Play size={40} fill="white" className="ml-2" />
                 </motion.button>
-                
-                <h3 className="text-3xl font-bold mb-4 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
-                  {title}
-                </h3>
-                <p className="text-neutral-400 mb-8 max-w-lg text-center">{description}</p>
-                <div className="text-sm text-neutral-500">Click to play • Fullscreen available</div>
+                <h3 className="text-3xl font-bold mb-4">{title}</h3>
+                {description && <p className="text-neutral-400 mb-8 max-w-lg text-center">{description}</p>}
               </div>
             )}
           </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
-  );
-};
-
-// Project Card Component
-const ProjectCard = ({
-  project,
-  onPlayVideo,
-}: {
-  project: any;
-  onPlayVideo: (project: any) => void;
-}) => {
-  return (
-    <motion.div
-      variants={fadeInUp}
-      whileHover={{ scale: 1.02 }}
-      className="group relative aspect-video sm:aspect-9/16 md:aspect-video overflow-hidden rounded-2xl cursor-pointer"
-      onClick={() => onPlayVideo(project)}
-    >
-      {/* Thumbnail */}
-      <div className="absolute inset-0">
-        <div
-          className={`absolute inset-0 ${project.thumbnailColor} opacity-30`}
-        />
-        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
-      </div>
-
-      {/* Play Button */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <motion.div
-          whileHover={{ scale: 1.15 }}
-          className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-black shadow-xl"
-        >
-          <Play size={22} className="ml-0.5" />
-        </motion.div>
-      </div>
-
-      {/* Bottom Info */}
-      <div className="absolute bottom-0 left-0 right-0 p-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-medium tracking-wide text-white">
-            {project.title}
-          </h3>
-          <span className="text-xs text-neutral-300">
-            {project.category}
-          </span>
-        </div>
-      </div>
-    </motion.div>
   );
 };
 
@@ -222,87 +142,11 @@ export default function Home() {
 
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<any>(null);
-  const [hoveredWork, setHoveredWork] = useState<number | null>(null);
 
   // Parallax effects
   const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
   const scale = useTransform(scrollYProgress, [0, 0.5], [0.9, 1]);
 
-  // Sample client videos (YouTube/Vimeo URLs)
-  const projects = [
-    {
-      id: 1,
-      title: "Nike - Run Forever",
-      client: "Nike Inc.",
-      category: "Short form",
-      description: "Dynamic commercial campaign showcasing Nike's latest running collection with high-energy editing and color grading.",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Replace with actual video URL
-      stats: "2.5M+ Views",
-      duration: "60s",
-      tags: ["4K", "Color Grading", "VFX"],
-      thumbnailColor: "bg-gradient-to-br from-orange-500/20 to-rose-600/20"
-    },
-    {
-      id: 2,
-      title: "TechReview 2024",
-      client: "TechReview Channel",
-      category: "Short form",
-      description: "8-episode series with complex animations and motion graphics explaining cutting-edge technology.",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      stats: "1.8M+ Views",
-      duration: "8 Episodes",
-      tags: ["Animation", "Motion", "Series"],
-      thumbnailColor: "bg-gradient-to-br from-blue-500/20 to-teal-500/20"
-    },
-    {
-      id: 3,
-      title: "Neon Nights",
-      client: "Universal Music",
-      category: "Short form",
-      description: "Award-winning music video featuring neon aesthetics and complex visual effects synchronized to the beat.",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      stats: "15M+ Views",
-      duration: "3:45",
-      tags: ["Animation", "motion", "VFX"],
-      thumbnailColor: "bg-gradient-to-br from-purple-500/20 to-pink-500/20"
-    },
-    {
-      id: 4,
-      title: "Future of AI",
-      client: "National Geographic",
-      category: "Long form",
-      description: "Feature documentary exploring artificial intelligence with interviews, b-roll, and explanatory animations.",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      stats: "5.2M+ Views",
-      duration: "25min",
-      tags: ["Documentary", "Interview", "Animation"],
-      thumbnailColor: "bg-gradient-to-br from-emerald-500/20 to-green-500/20"
-    },
-    {
-      id: 5,
-      title: "Cosmic Journey",
-      client: "Indie Film Festival",
-      category: "Long form",
-      description: "Sci-fi short film with extensive visual effects and atmospheric sound design.",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      stats: "Award Winning",
-      duration: "12min",
-      tags: ["Sci-Fi", "VFX", "Sound"],
-      thumbnailColor: "bg-gradient-to-br from-indigo-500/20 to-violet-500/20"
-    },
-    {
-      id: 6,
-      title: "Brand Identity 2024",
-      client: "Corporate Client",
-      category: "Long form",
-      description: "Corporate brand video highlighting company values and services with professional narration.",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      stats: "300% ROI",
-      duration: "90s",
-      tags: ["Corporate", "Brand", "Marketing"],
-      thumbnailColor: "bg-gradient-to-br from-amber-500/20 to-orange-500/20"
-    }
-  ];
 
   const stats = [
     { value: "100M+", label: "Views Generated", icon: Eye },
@@ -325,10 +169,6 @@ export default function Home() {
     });
   };
 
-  const handleViewAllProjects = () => {
-    // In a real app, this would navigate to a portfolio page
-    alert("View all projects - This would navigate to a detailed portfolio page");
-  };
 
   const handleStartProject = () => {
     window.location.href = "mailto:hello@studio.com?subject=New%20Project%20Inquiry&body=Hello,%20I'm%20interested%20in%20starting%20a%20project.";
@@ -512,48 +352,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Work Showcase - With Video Cards */}
-      <section id="work" className="px-6 py-24">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            variants={staggerContainer}
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            <motion.div variants={fadeInUp} className="mb-16">
-              <div className="flex items-end justify-between mb-12">
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="h-px w-12 bg-gradient-to-r from-violet-500 to-transparent" />
-                    <span className="text-sm font-medium text-violet-400 uppercase tracking-widest">Selected Work</span>
-                  </div>
-                  <h2 className="text-5xl md:text-6xl font-bold">
-                    <span className="text-white">Featured</span>
-                    <br />
-                    <span className="bg-gradient-to-r from-violet-500 to-cyan-400 bg-clip-text text-transparent">
-                      Projects
-                    </span>
-                  </h2>
-                </div>
-              </div>
-
-              {/* Work Grid with Videos */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {projects.map((project, index) => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    onPlayVideo={handlePlayVideo}
-                  />
-                ))}
-              </div>
-
-            
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+      <WorkShowcase handlePlayVideo={handlePlayVideo} />
 
       {/* Methodology Section */}
       <section id="process" className="px-6 py-24 bg-gradient-to-b from-transparent to-black/20">
