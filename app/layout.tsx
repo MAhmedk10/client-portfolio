@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EESA Studio",
+  title: "Racto Production",
   description: "I Craft Moments ",
 };
 

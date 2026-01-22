@@ -5,7 +5,7 @@ import ChatWidget from "./components/ChatWidget";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 import WorkShowcase from "./components/WorkShowcase";
-
+import Image from "next/image";
 import type { Variants } from "framer-motion";
 
 // Animation Variants - Properly typed
@@ -211,7 +211,7 @@ export default function Home() {
       className="flex items-center gap-2"
     >
       <div className="h-2 w-2 rounded-full bg-gradient-to-br from-violet-500 to-cyan-500" />
-      <span className="text-sm font-semibold tracking-wide">EESA STUDIO</span>
+      <span className="text-sm font-semibold tracking-wide">RACTO PRODUCTION</span>
     </button>
 
     {/* Center Menu */}
@@ -439,101 +439,133 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="px-6 py-24">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              ref={targetRef}
-              style={{ opacity, scale }}
-              className="relative"
-            >
-              <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 bg-gradient-to-br from-violet-900/20 to-cyan-900/20">
-                <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
-                
-                <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/90 to-transparent">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 rounded-xl bg-gradient-to-br from-violet-600/20 to-cyan-600/20">
-                      <Cpu size={24} className="text-cyan-400" />
-                    </div>
-                    <div>
-                      <p className="font-bold">State-of-the-Art Studio</p>
-                      <div className="flex items-center gap-2 text-sm text-neutral-400">
-                        <MapPin size={12} />
-                        <span>New York City</span>
-                      </div>
-                    </div>
-                  </div>
+      {/* About Section */}
+<section id="about" className="px-6 py-24">
+  <div className="max-w-7xl mx-auto">
+    <div className="grid lg:grid-cols-2 gap-16 items-center">
+      {/* Left Column - Founder Image */}
+      <motion.div
+        ref={targetRef}
+        style={{ opacity, scale }}
+        className="relative group"
+      >
+        {/* Image Container */}
+        <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10">
+          {/* Founder Image */}
+          <Image
+            src="/images/founder.jpg" // Make sure this file exists in /public/images/
+            alt="Founder of EESA Studio - Creative Director"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+            priority
+          />
+          
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+          
+          {/* Overlay Content */}
+          <div className="absolute bottom-0 left-0 right-0 p-8">
+            <div className="flex items-start gap-4">
+              <div className="p-3 rounded-xl bg-gradient-to-br from-violet-600/30 to-cyan-600/30 backdrop-blur-sm">
+                <Cpu size={24} className="text-cyan-400" />
+              </div>
+              <div>
+                <h4 className="text-xl font-bold mb-1">Founder & Creative Director</h4>
+                <div className="flex items-center gap-2 text-sm text-neutral-300">
+                  <MapPin size={14} />
+                  <span>Leading from Pakistan</span>
                 </div>
-              </div>
-            </motion.div>
-
-            <div>
-              <motion.h2
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="text-5xl md:text-6xl font-bold mb-8 leading-tight"
-              >
-                Studio <span className="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">Excellence</span>
-                <br />in Every Frame
-              </motion.h2>
-              
-              <motion.p
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="text-lg text-neutral-300 mb-10 leading-relaxed"
-              >
-                We combine cutting-edge technology with artistic vision to engineer visual experiences that resonate and convert.
-              </motion.p>
-
-              <div className="space-y-4 mb-12">
-                {[
-                  { icon: Zap, text: "Real-time collaboration with clients worldwide" },
-                  { icon: Globe, text: "Multi-platform delivery optimized for all devices" },
-                  { icon: Layers, text: "Advanced VFX and motion graphics pipeline" },
-                ].map((item, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10"
-                  >
-                    <div className="p-2 rounded-lg bg-gradient-to-br from-violet-500/20 to-cyan-500/20">
-                      <item.icon size={20} className="text-cyan-400" />
-                    </div>
-                    <span className="text-lg">{item.text}</span>
-                  </motion.div>
-                ))}
-              </div>
-
-              <div className="flex gap-4">
-                <button 
-                  onClick={() => handleSocialLink('instagram')}
-                  className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
-                >
-                  <Instagram size={20} />
-                </button>
-                <button 
-                  onClick={() => handleSocialLink('twitter')}
-                  className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
-                >
-                  <Twitter size={20} />
-                </button>
-                <button 
-                  onClick={() => handleSocialLink('linkedin')}
-                  className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
-                >
-                  <Linkedin size={20} />
-                </button>
               </div>
             </div>
           </div>
+          
+          {/* Top Badge */}
+          <div className="absolute top-6 left-6">
+            <div className="px-4 py-2 rounded-full bg-black/50 backdrop-blur-sm text-sm font-medium">
+              📸 Founder
+            </div>
+          </div>
         </div>
-      </section>
+        
+        {/* Decorative Elements */}
+        <div className="absolute -bottom-4 -right-4 w-32 h-32 rounded-full bg-gradient-to-br from-violet-500/10 to-cyan-500/10 blur-xl -z-10" />
+      </motion.div>
+
+      {/* Right Column - Text Content */}
+      <div>
+        <motion.h2
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-5xl md:text-6xl font-bold mb-8 leading-tight"
+        >
+          Studio <span className="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">Excellence</span>
+          <br />in Every Frame
+        </motion.h2>
+        
+        <motion.p
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="text-lg text-neutral-300 mb-10 leading-relaxed"
+        >
+          We combine cutting-edge technology with artistic vision to engineer visual experiences that resonate and convert.
+        </motion.p>
+
+        <div className="space-y-4 mb-12">
+          {[
+            { icon: Zap, text: "Real-time collaboration with clients worldwide" },
+            { icon: Globe, text: "Multi-platform delivery optimized for all devices" },
+            { icon: Layers, text: "Advanced VFX and motion graphics pipeline" },
+          ].map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10"
+              >
+                <div className="p-2 rounded-lg bg-gradient-to-br from-violet-500/20 to-cyan-500/20">
+                  <Icon size={20} className="text-cyan-400" />
+                </div>
+                <span className="text-lg">{item.text}</span>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        <div className="flex gap-4">
+          <button 
+            onClick={() => handleSocialLink('instagram')}
+            className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+            aria-label="Visit our Instagram"
+          >
+            <Instagram size={20} />
+          </button>
+          <button 
+            onClick={() => handleSocialLink('twitter')}
+            className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+            aria-label="Visit our Twitter"
+          >
+            <Twitter size={20} />
+          </button>
+          <button 
+            onClick={() => handleSocialLink('linkedin')}
+            className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+            aria-label="Visit our LinkedIn"
+          >
+            <Linkedin size={20} />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* CTA Section */}
       <section id="contact" className="px-6 py-24">
@@ -574,10 +606,6 @@ export default function Home() {
             <a href="mailto:hello@studio.com" className="flex items-center gap-2 hover:text-white transition-colors">
               <Mail size={16} />
               hello@studio.com
-            </a>
-            <a href="tel:+15551234567" className="flex items-center gap-2 hover:text-white transition-colors">
-              <Phone size={16} />
-              +1 (555) 123-4567
             </a>
           </div>
         </motion.div>
@@ -668,7 +696,7 @@ export default function Home() {
           </div>
           
           <div className="mt-20 text-center text-sm text-neutral-600">
-            © 2026 EESA Studio. All rights reserved.
+            © 2026 Racto Productions. All rights reserved.
           </div>
         </div>
       </footer>
