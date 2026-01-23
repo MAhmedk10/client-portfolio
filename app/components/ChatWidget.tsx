@@ -16,8 +16,21 @@ export default function ChatWidget() {
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [threadId, setThreadId] = useState<string>("");
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+ useEffect(() => {
+    let savedId = localStorage.getItem("chat_thread_id");
+    
+    if (!savedId) {
+      // Generate a new unique ID if one doesn't exist
+      savedId = crypto.randomUUID(); 
+      localStorage.setItem("chat_thread_id", savedId);
+    }
+    
+    setThreadId(savedId);
+  }, []);
 
   // Auto-scroll to bottom when messages change or loading starts
   const scrollToBottom = () => {
@@ -44,7 +57,7 @@ export default function ChatWidget() {
       const response = await fetch("https://Astrik10-client-portfolio.hf.space/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMsg }),
+        body: JSON.stringify({ message: userMsg,thread_id:threadId}),
       });
 
       if (!response.ok) {
