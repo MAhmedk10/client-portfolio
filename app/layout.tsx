@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Racto Production",
-  description: "I Craft Moments ",
+  title: "MA | Agency",
+  description: "We provide AI powered solutions ",
 };
 
 export default function RootLayout({
