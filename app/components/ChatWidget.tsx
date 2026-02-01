@@ -12,7 +12,7 @@ type Message = {
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: "bot", content: "Hey! I'm the EESA's AI. Want to know anything about my work?" },
+    { role: "bot", content: "Welcome to the MA | Agency,How can we assist you to grow your buisness?" },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
